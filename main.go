@@ -4,6 +4,7 @@ import (
 	"go-web-native/config"
 	"go-web-native/controllers/categorycontroller"
 	"go-web-native/controllers/homecontroller"
+	"go-web-native/controllers/productcontroller"
 	"log"
 	"net/http"
 )
@@ -21,6 +22,11 @@ func main() {
 	http.HandleFunc("/categories/delete", categorycontroller.Delete)
 
 	//products
+	http.HandleFunc("/products", productcontroller.IndexProduct)
+	http.HandleFunc("/products/add", productcontroller.Add)
+	http.HandleFunc("/products/edit", productcontroller.Edit)
+	http.HandleFunc("/products/delete", productcontroller.Delete)
+
 
 	log.Println("Server running")
 	http.ListenAndServe(":8080", nil)

@@ -26,21 +26,26 @@
       <div class="container mt-3">
         <h2>List Categories</h2>
         <hr>
-        <a href="/categories/add" class="btn btn-primary">Add Category</a>
+        <a href="/products/add" class="btn btn-primary">Add Category</a>
         <table class="table table-striped mt-2 text-center">
             <thead>
                 <tr>
                     <th>Name</th>
+                    <th>Category</th>
+                    <th>Stock</th>
                     <th>Action</th>
                 </tr>
             </thead>
             <tbody>
-                {{range.categories}}
+                {{range.products}}
                 <tr>
                     <td>{{.Name}}</td>
+                    <td>{{.Category.Name}}</td>
+                    <td>{{.Stock}}</td>
                     <td>
-                        <a href="/categories/edit?id={{.Id}}" class="btn btn-warning">Edit</a>
-                        <a href="/categories/delete?id={{.Id}}" class="btn btn-danger" onclick="return confirm('Yakin akan menghapus data ini?')">Delete</a>
+                        <a href="/products/edit?id={{.Id}}" class="btn btn-warning">Edit</a>
+                        <a href="/products/detail?id={{.Id}}" class="btn btn-info">Detail</a>
+                        <a href="/products/delete?id={{.Id}}" class="btn btn-danger" onclick="return confirm('Yakin akan menghapus data ini?')">Delete</a>
                     </td>
                 </tr>
                 {{end}}
