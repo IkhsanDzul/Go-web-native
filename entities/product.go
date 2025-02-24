@@ -5,7 +5,8 @@ import "time"
 type Product struct {
 	Id        uint
 	Name      string
-	Category  Category
+	CategoryID  uint
+    Category    Category `gorm:"foreignKey:CategoryID"`
 	Stock     int64
 	Description string
 	CreatedAt time.Time

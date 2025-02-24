@@ -26,32 +26,27 @@
       <div class="container mt-3">
         <div class="row d-flex justify-content-center">
           <div class="col-4">
-            <h2>Add Product</h2>
+            <h2>Detail Product</h2>
             <hr>
-            <form action="/products/add" method="POST" enctype="multipart/form-data">
+            <form action="/products/detail" method="POST" enctype="multipart/form-data">
                 <div class="mb-3">
                   <label for="name" class="form-label">Name</label>
-                  <input type="text" class="form-control" id="name" name="name" placeholder="Enter Name">
+                  <input type="text" class="form-control" id="name" name="name" value="{{ .product.Name }}" disabled>
                 </div>
                 <div class="mb-3">
-                    <label for="Category" class="form-label">Category</label>
-                    <select name="category_id" id="category" class="form-select">
-                        {{range .categories}}
-                            <option value="{{ .Id}}" selected>{{ .Name}}</option>
-                        {{end}}
-                    </select>
+                    <label for="category" class="form-label">Category</label>
+                    <input type="text" class="form-control" id="category" name="category_id" value="{{ .product.Category.Name}}" disabled>
                 </div>
                 <div class="mb-3">
-                    <label for="Stock" class="form-label">Stock</label>
-                    <input type="number" class="form-control" id="Stock" name="stock" placeholder="Enter Stock">
+                    <label for="stock" class="form-label">Stock</label>
+                    <input type="number" class="form-control" id="stock" name="stock" value="{{ .product.Stock }}" disabled>
                 </div>
                 <div class="mb-3">
                     <label  class="form-label">Description</label>
-                    <textarea class="form-control" name="description" rows="3"></textarea>
+                    <textarea class="form-control" id="description" name="description" rows="3" disabled>{{ .product.Description}}</textarea>
                   </div>
                 <div class="float-end">
                     <a href="/products" class="btn btn-secondary">Back</a>
-                    <button type="submit" class="btn btn-primary">Save</button>
                 </div>
               </form>
           </div>

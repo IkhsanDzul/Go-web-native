@@ -6,7 +6,7 @@ import (
 )
 
 func GetAll() []entities.Category {
-	rows, err := config.DB.Query("SELECT * FROM categories")
+	rows, err := config.DB.Query("SELECT id, name, created_at, updated_at FROM categories")
 	if err != nil {
 		panic(err)
 	}
@@ -17,16 +17,10 @@ func GetAll() []entities.Category {
 
 	for rows.Next() {
 		var category entities.Category
-		if err := rows.Scan(
-			&category.Id, 
-			&category.Name, 
-			&category.CreatedAt, 
-			&category.UpdatedAt,
-		); 
-		err != nil {
-		  panic(err)
+		err := rows.Scan(&category.Id, &category.Name, &category.CreatedAt, &category.UpdatedAt)
+		if err != nil {
+			panic(err)
 		}
-
 		categories = append(categories, category)
 	}
 	
