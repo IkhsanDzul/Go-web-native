@@ -63,12 +63,64 @@ func Add(w http.ResponseWriter, r *http.Request) {
 		temp, _ := template.ParseFiles("views/product/create.html")
 		temp.Execute(w, data)
 
-		http.Redirect(w, r, "/products", http.StatusSeeOther)
+		http.Redirect(w, r, "/product", http.StatusSeeOther)
 	}
 }
 
 func Edit(w http.ResponseWriter, r *http.Request) {
+	if r.Method == "GET" {
+		temp, err := template.ParseFiles("views/product/edit.html")
+		if err != nil {
+			panic(err)
+		}
 
+		idString := r.URL.Query().Get("id")
+		id, err := strconv.Atoi(idString)
+		if err != nil {
+			panic(err)
+		}
+
+		product := productmodel.Detail(id)
+		categories := categorymodel.GetAll()
+		data := map[string]any{
+			"categories": categories,
+			"product":    product,
+		}
+
+		temp.Execute(w, data)
+	}
+
+	if r.Method == "POST" {
+		var product entities.Product
+
+		idString := r.FormValue("id")
+		id, err := strconv.Atoi(idString)
+		if err != nil {
+			panic(err)
+		}
+
+		if ok := productmodel.Update(id, product); !ok {
+			temp, _ := template.ParseFiles("views/product/create.html")
+			temp.Execute(w, nil)
+		}
+
+		categories := categorymodel.GetAll()
+		data := map[string]any{
+			"categories": categories,
+		}
+
+		product.Name = r.FormValue("name")
+		categoryID, _ := strconv.Atoi(r.FormValue("category_id"))
+		product.Category.Id = uint(categoryID)
+		product.Stock, _ = strconv.ParseInt(r.FormValue("stock"), 10, 64)
+		product.Description = r.FormValue("description")
+		product.UpdatedAt = time.Now()
+
+		temp, _ := template.ParseFiles("views/product/create.html")
+		temp.Execute(w, data)
+
+		http.Redirect(w, r, "/products", http.StatusSeeOther)
+	}
 }
 
 func Detail(w http.ResponseWriter, r *http.Request) {
@@ -92,5 +144,15 @@ func Detail(w http.ResponseWriter, r *http.Request) {
 }
 
 func Delete(w http.ResponseWriter, r *http.Request) {
+	idString := r.URL.Query().Get("id")
+    id, err := strconv.Atoi(idString)
+    if err != nil {
+        panic(err)
+    }
 
+    if err := productmodel.Delete(id); err != nil {
+        http.Error(w, "Gagal menghapus data", http.StatusInternalServerError)
+    }
+
+    http.Redirect(w, r, "/products", http.StatusSeeOther)
 }
